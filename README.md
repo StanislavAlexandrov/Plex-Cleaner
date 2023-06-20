@@ -1,4 +1,18 @@
-## Please update the script to version 1.94 to avoid problems with your server by creating too many devices!
+# Fork Notice
+
+This is a fork of the original Plex Cleaner project. It addresses an issue where the script would fail to find media files, resulting in "[NOT FOUND]" errors. It's a hacky solution, so use at your own risk! Always use the --test option first!
+
+The problem lies in the mismatch between the file paths returned from Plex and the actual file paths on Synology devices. For example, Plex may return a path like /movies/..., whereas the actual media file resides at /volume1/media/movies.
+
+To correct this issue, this fork allows you to manually specify the correct paths to your movie and TV series media files. You need to do this in the PlexCleaner.py file.
+
+By default, the paths are empty strings. If they are not updated with the correct paths, the script will throw an error. Please make sure to provide both paths.
+
+All other aspects of the Plex Cleaner project remain the same.
+
+Refer to the original README for additional information about the usage and functionality of Plex Cleaner.
+
+## Please update the script to version 1.94 to avoid problems with your server by creating too many devices
 
 # Plex Cleaner
 
@@ -27,7 +41,7 @@ After you have entered your settings, it is recommended you first run the script
 
 ## Docker
 
-You can find a dockerized version of this script here: https://github.com/NitriKx/docker-Plex-Cleaner
+You can find a dockerized version of this script here: <https://github.com/NitriKx/docker-Plex-Cleaner>
 
 ```
 docker pull nitrikx/plex-cleaner
@@ -36,7 +50,7 @@ docker run -ti -v /path/to/config/folder nitrikx/plex-cleaner
 
 ## Crontab and monitoring with Healthchecks.io
 
-Create an account on https://healthchecks.io, and create up a new health check.
+Create an account on <https://healthchecks.io>, and create up a new health check.
 Create a new file at `healthchecksio_id`, and paste your health check ID.
 
 Set up a `crontab` entry to run the script every day at 4am:
@@ -51,4 +65,3 @@ $ crontab -e
 
 If you want to support me (does not equal development): <br>
 <a href="https://www.paypal.me/ngovil21/1" target=blank><img src=http://imgur.com/WSVZSTW.png alt="Buy Me a Coffee" height=75 width=150 align='center'></a> &nbsp;&nbsp; or &nbsp;&nbsp; <a href="https://www.paypal.me/ngovil21/3" target=blank><img src=http://imgur.com/gnvlm6n.jpg alt="Buy Me a Beer" height=75 width=150 align='center'></a>
-
