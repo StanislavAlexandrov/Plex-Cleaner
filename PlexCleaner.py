@@ -37,7 +37,10 @@ EmailServerUseTLS = False  # Email Server - whether or not to use TLS (for Gmail
 EmailUsername = ""  # Email server username
 EmailPassword = ""  # Email server password - if using Gmail, you can use an "app password" so your regular email password isn't in plain text in your config. See: https://myaccount.google.com/apppasswords
 EmailRecipient = ""  # Email address to receive the log file contents, if enabled.
-
+# fix for Synology etc. MOVIES_PATH and TV_SHOWS_PATH MUST BE DEFINED HERE. Empty strings are not accepted.
+# example: MOVIES_PATH = "/volume1/media/MOVIES/", TV_SHOWS_PATH = "/volume1/media/TV/"
+MOVIES_PATH = ""
+TV_SHOWS_PATH = ""
 # Use Username/Password or Token for servers with PlexHome
 # To generate a proper Token, first put your username and password and run the script with the flag --test.
 # The Token will be printed in the console or in the logs. Tokens are preferred so that you password is not in
@@ -197,6 +200,12 @@ CONFIG_VERSION = 2.0
 home_user_tokens = {}
 machine_client_identifier = ''
 
+# Check if the paths are not empty, and raise an error if they are.
+if not MOVIES_PATH:
+    raise ValueError('MOVIES_PATH is not set in the configuration file.')
+
+if not TV_SHOWS_PATH:
+    raise ValueError('TV_SHOWS_PATH is not set in the configuration file.')
 
 def convert_size(size_bytes):
     if (size_bytes == 0):
@@ -727,6 +736,8 @@ def checkMovies(document, section):
         title = VideoNode.getAttribute("title")
         movie_id = VideoNode.getAttribute("ratingKey")
         m = getMediaInfo(VideoNode)
+        #this is the path fix
+        m['file'] = m['file'].replace("/movies/", MOVIES_PATH)
         onDeck = CheckOnDeck(movie_id)
         collections = VideoNode.getElementsByTagName("Collection")
         for collection in collections:
@@ -896,6 +907,8 @@ def checkShow(showDirectory):
                         episode_num = VideoNode.getAttribute('addedAt')
             title = VideoNode.getAttribute('title')
             m = getMediaInfo(VideoNode)
+            #this is the path fix
+            m['file'] = m['file'].replace("/tv/", TV_SHOWS_PATH)
             if show_settings['watched']:
                 if check_users:
                     show_settings['onDeck'] = False
